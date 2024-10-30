@@ -31,6 +31,40 @@ namespace Module07DataAccess.ViewModel
             }
         }
 
+        private Personal _selectedPersonal;
+        public Personal SelectedPersonal
+        {
+            get => _selectedPersonal;
+            set
+            {
+                _selectedPersonal = value;
+                if (_selectedPersonal != null)
+                {
+                    NewPersonalName = _selectedPersonal.Name;
+                    NewPersonalGender = _selectedPersonal.Gender;
+                    NewPersonalContactNo = _selectedPersonal.ContactNo;
+                    IsPersonSelected = true;
+                }
+                else
+                {
+                    IsPersonSelected = false;
+                }
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isPersonSelected;
+        public bool IsPersonSelected
+        {
+            get => _isPersonSelected;
+            set
+            {
+                _isPersonSelected = value;
+                OnPropertyChanged();
+            }
+        }
+
+
         private string _statusMessage;
         public string StatusMessage
         {
@@ -79,6 +113,7 @@ namespace Module07DataAccess.ViewModel
 
         public ICommand LoadDataCommand {  get; }
         public ICommand AddPersonalCommand { get; }
+        public ICommand SelectedPersonalCommand { get; }
 
         //Personal ViewModel Constructor
 
@@ -88,6 +123,7 @@ namespace Module07DataAccess.ViewModel
             PersonalList = new ObservableCollection<Personal>();
             LoadDataCommand = new Command(async () => await LoadData());
             AddPersonalCommand = new Command(async() => await AddPerson());
+            SelectedPersonalCommand = new Command<Personal>(person => SelectedPersonal = person);
 
             LoadData();
         }

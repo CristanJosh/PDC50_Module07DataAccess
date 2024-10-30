@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:local="clr-namespace:Module07DataAccess.ViewModel"
              x:Class="Module07DataAccess.View.ViewPersonal"
              Title="View Personal"
              BackgroundColor="#F8F9FA"
@@ -20,6 +21,7 @@
             <!-- List of Personal Data -->
             <Frame BorderColor="#4A90E2" CornerRadius="10" Padding="10" HasShadow="True">
                 <ListView ItemsSource="{Binding PersonalList}"
+                          SelectedItem="{ Binding SelectedPersonal}"
                           SeparatorColor="#E0E0E0"
                           BackgroundColor="White"
                           HeightRequest="200">
@@ -38,6 +40,12 @@
                                     <Label Text="{Binding ContactNo}"
                                            FontSize="14"
                                            TextColor="#666"/>
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type local:PersonalViewModel}},
+                                            Path= SelectedPersonalCommand}"
+                                            CommandParameter="{Binding .}"/>
+                                    </StackLayout.GestureRecognizers>
                                 </StackLayout>
                             </ViewCell>
                         </DataTemplate>
