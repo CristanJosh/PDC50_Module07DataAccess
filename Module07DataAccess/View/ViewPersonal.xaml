@@ -18,11 +18,21 @@
         </ListView>
         
         <Button Text="Load Data" Command="{Binding LoadDataCommand}"/>
-        
+
         <Label x:Name="ConnectionStatusLabel"
                Text="{Binding StatusMessage}"
                FontSize="18"
                HorizontalOptions="Center"/>
+
+        <Label Text="Add New Person" FontSize="Large"/>
+        <Entry Placeholder="Name" Text="{Binding NewPersonalName}"/>
+        <Entry Placeholder="Gender" Text="{Binding NewPersonalGender}"/>
+        <Entry Placeholder="ContactNo" Text="{Binding NewPersonalContactNo}"/>
+
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+            <Button Text="Add Person" Command="{Binding AddPersonalCommand}"/>
+        </StackLayout>
+
 
 
     </VerticalStackLayout>

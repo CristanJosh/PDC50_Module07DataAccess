@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Module07DataAccess.Services;
 using Module07DataAccess.Model;
-using System.Collections.ObjectModel;
+ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -42,7 +42,43 @@ namespace Module07DataAccess.ViewModel
             }
         }
 
+
+        //New Personal entry for name, gender, contact no
+        private string _newPersonalName;
+        public string NewPersonalName
+        {
+            get => _newPersonalName;
+            set
+            {
+                _newPersonalName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _newPersonalGender;
+        public string NewPersonalGender
+        {
+            get => _newPersonalGender;
+            set
+            {
+                _newPersonalGender = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _newPersonalContactNo;
+        public string NewPersonalContactNo
+        {
+            get => _newPersonalContactNo;
+            set
+            {
+                _newPersonalContactNo = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ICommand LoadDataCommand {  get; }
+        public ICommand AddPersonalCommand { get; }
 
         //Personal ViewModel Constructor
 
@@ -51,6 +87,7 @@ namespace Module07DataAccess.ViewModel
             _personalService = new PersonalService();
             PersonalList = new ObservableCollection<Personal>();
             LoadDataCommand = new Command(async () => await LoadData());
+            AddPersonalCommand = new Command(async() => await AddPerson());
 
             LoadData();
         }
@@ -80,6 +117,46 @@ namespace Module07DataAccess.ViewModel
             }
 
         }
+
+        private async Task AddPerson()
+        {
+            if (IsBusy || string.IsNullOrWhiteSpace(NewPersonalName) || string.IsNullOrWhiteSpace(NewPersonalGender) ||
+                string.IsNullOrWhiteSpace(NewPersonalContactNo))
+            {
+                StatusMessage = "Please fill in all the fields before adding";
+                return;
+            }
+            IsBusy = true;
+            StatusMessage = "Adding new person...";
+
+            try
+            {
+                var newPerson = new Personal
+                {
+                    Name = NewPersonalName,
+                    Gender = NewPersonalGender,
+                    ContactNo = NewPersonalContactNo,
+                };
+                var isSuccess = await _personalService.AddPersonalAsync(newPerson);
+                if (isSuccess) 
+                { 
+                    NewPersonalName = string.Empty;
+                    NewPersonalGender = string.Empty;
+                    NewPersonalContactNo = string.Empty;
+                    StatusMessage = "New Person added successfully";
+                }
+                else
+                {
+                    StatusMessage = "Failed to add the new person";
+                }
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = $"Failed to add the new person {ex.Message}";
+            }
+            finally { IsBusy = false; }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
