@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-              xmlns:local="clr-namespace:Module07DataAccess.ViewModel"
+             xmlns:local="clr-namespace:Module07DataAccess.ViewModel"
              x:Class="Module07DataAccess.View.ViewPersonal"
              Title="View Personal"
              BackgroundColor="#F8F9FA"
@@ -21,7 +21,7 @@
             <!-- List of Personal Data -->
             <Frame BorderColor="#4A90E2" CornerRadius="10" Padding="10" HasShadow="True">
                 <ListView ItemsSource="{Binding PersonalList}"
-                          SelectedItem="{ Binding SelectedPersonal}"
+                          SelectedItem="{Binding SelectedPersonal}"
                           SeparatorColor="#E0E0E0"
                           BackgroundColor="White"
                           HeightRequest="200">
@@ -43,7 +43,7 @@
                                     <StackLayout.GestureRecognizers>
                                         <TapGestureRecognizer
                                             Command="{Binding Source={RelativeSource AncestorType={x:Type local:PersonalViewModel}},
-                                            Path= SelectedPersonalCommand}"
+                                            Path=SelectedPersonalCommand}"
                                             CommandParameter="{Binding .}"/>
                                     </StackLayout.GestureRecognizers>
                                 </StackLayout>
@@ -98,7 +98,7 @@
                    PlaceholderColor="#B0B0B0"
                    Margin="0,5"/>
 
-            <!-- Add Person Button -->
+            <!-- Add and Delete Buttons Section -->
             <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="0,20,0,0">
                 <Button Text="Add Person" 
                         Command="{Binding AddPersonalCommand}" 
@@ -107,6 +107,17 @@
                         FontAttributes="Bold"
                         CornerRadius="20"
                         Padding="10,5"/>
+
+                <!-- Delete Button -->
+                <Button Text="Delete Person"
+                Command="{Binding DeletePersonCommand}"
+                IsEnabled="{Binding IsPersonSelected}" 
+                BackgroundColor="#E74C3C"
+                TextColor="White"
+                FontAttributes="Bold"
+                CornerRadius="20"
+                Padding="10,5"
+                Margin="10,0,0,0"/>
             </StackLayout>
 
         </VerticalStackLayout>
